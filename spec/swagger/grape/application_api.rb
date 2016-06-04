@@ -6,6 +6,7 @@ require_relative '../grape/entities/error_redirect_entity'
 require_relative '../grape/entities/error_not_found_entity'
 require_relative '../grape/entities/error_boom_entity'
 require_relative '../grape/entities/detailed_status_entity'
+require_relative '../grape/entities/array_of_hash'
 
 class ApplicationsAPI < Grape::API
   version 'v1'
@@ -159,6 +160,36 @@ class ApplicationsAPI < Grape::API
     put '/:id' do
       @application = { id: '123456', name: 'An app', description: 'Great App' }
       api_present(@applications)
+    end
+
+    api_desc 'Fatch attributes.' do
+      headers authentication_headers
+      scopes %w(application:read)
+      tags %w(applications)
+      response ArrayOfHash, isArray: false, headers: result_headers
+      api_name 'get_attributes'
+    end
+    params do
+      requires :id, type: String, desc: 'Unique identifier or code name of the application'
+    end
+    get '/:id/attributes' do
+      @attributes = {attributes: {"a" => "b", "c" => "d"}}
+      api_present(@attributes)
+    end
+
+    api_desc 'Uplaod image.' do
+      headers authentication_headers
+      scopes %w(application:read application:write)
+      tags %w(applications upload swag more_swag)
+      response StatusDetailed, isArray: true, headers: result_headers
+      api_name 'upload_image'
+    end
+    params do
+      requires :id, :type => String, :desc => "ID."
+      requires :image, :type => Rack::Multipart::UploadedFile, :desc => "Image file."
+    end
+    post '/:id/upload' do
+      new_file = ActionDispatch::Http::UploadedFile.new(params[:image])
     end
 
     # Mix in with desc instead of api_desc

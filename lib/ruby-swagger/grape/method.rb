@@ -15,6 +15,7 @@ module Swagger::Grape
       operation_params
       operation_responses
       operation_security
+      operation_consumes
 
       self
     end
@@ -131,6 +132,12 @@ module Swagger::Grape
       end
     end
 
+    def operation_consumes
+      if @operation.parameters.any? { |p| p.in == 'formData'}
+        @operation.consumes = [ 'multipart/form-data' ]
+      end
+    end
+
     # extract the tags
     def grape_tags
       (@route.route_tags && !@route.route_tags.empty?) ? @route.route_tags : [@route_name.split('/')[1]]
@@ -148,11 +155,11 @@ module Swagger::Grape
       when 'delete'
         query_params
       when 'post'
-        body_params
+        has_file_paramter? ? formdata_params : body_params
       when 'put'
-        body_params
+        has_file_paramter? ? formdata_params : body_params
       when 'patch'
-        body_params
+        has_file_paramter? ? formdata_params : body_params
       when 'head'
         raise ArgumentError.new("Don't know how to handle the http verb HEAD for #{@route_name}")
       else
@@ -191,17 +198,25 @@ module Swagger::Grape
       end
     end
 
-    def query_params
+    def swagger_parameters(param_location)
       @route.route_params.each do |parameter|
         next if @params[parameter.first.to_s]
 
         swag_param = Swagger::Data::Parameter.from_grape(parameter)
         next unless swag_param
 
-        swag_param.in = 'query'
+        swag_param.in = param_location
 
         @params[parameter.first.to_s] = swag_param
       end
+    end
+
+    def query_params
+      swagger_parameters('query')
+    end
+
+    def formdata_params
+      swagger_parameters('formData')
     end
 
     def body_params
@@ -304,6 +319,13 @@ module Swagger::Grape
       return if @types.include?(type.to_s)
 
       @types << type.to_s
+    end
+
+    def has_file_paramter?
+      @route.route_params.any? { |p|
+        grape_type = Swagger::Grape::Param.new(p.last).to_swagger
+        grape_type['type'] == 'file'
+      }
     end
   end
 end
