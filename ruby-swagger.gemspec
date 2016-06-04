@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = 'ruby-swagger'
-  s.version   = `cat #{File.dirname(__FILE__)}/VERSION`
+  s.version   = '0.1.1-nurve'
   s.authors   = ['Luca Bonmassar']
   s.email     = ['luca@gild.com']
   s.homepage  = 'https://github.com/gild/ruby-swagger'
