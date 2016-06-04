@@ -285,6 +285,52 @@ describe 'Ruby::Swagger' do
         expect(doc['parameters'][0]['type']).to eq 'string'
         expect(doc['parameters'][0]['required']).to be_truthy
       end
+
+      it 'should get parameters for application/{id}/upload/post.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/{id}/upload/post.yml')
+
+        expect(doc['parameters'].count).to eq 3
+
+        expect(doc['parameters'][2]['name']).to eq 'image'
+        expect(doc['parameters'][2]['in']).to eq 'formData'
+        expect(doc['parameters'][2]['description']).to eq 'Image file.'
+        expect(doc['parameters'][2]['type']).to eq 'file'
+        expect(doc['parameters'][2]['required']).to be_truthy
+      end
+    end
+
+    describe 'consumes' do
+      it 'should not get consumes for applications/{id}/check_access/get.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/{id}/check_access/get.yml')
+
+        expect(doc['consumes']).to be_nil
+      end
+
+      it 'should not get consumes for applications/get.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/get.yml')
+
+        expect(doc['consumes']).to be_nil
+      end
+
+      it 'should not get consumes for applications/post.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/{id}/post.yml')
+
+        expect(doc['consumes']).to be_nil
+      end
+
+      it 'should not get consumes for applications/{id}/delete.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/{id}/delete.yml')
+
+        expect(doc['consumes']).to be_nil
+      end
+
+      it 'should get consumes for application/{id}/upload/post.yml' do
+        doc = open_yaml('./doc/swagger/paths/applications/{id}/upload/post.yml')
+
+        expect(doc['consumes']).not_to be_nil
+        expect(doc['consumes'].count).to eq 1
+        expect(doc['consumes'][0]).to eq 'multipart/form-data'
+      end
     end
 
     describe 'response' do

@@ -177,6 +177,21 @@ class ApplicationsAPI < Grape::API
       api_present(@attributes)
     end
 
+    api_desc 'Uplaod image.' do
+      headers authentication_headers
+      scopes %w(application:read application:write)
+      tags %w(applications upload swag more_swag)
+      response StatusDetailed, isArray: true, headers: result_headers
+      api_name 'upload_image'
+    end
+    params do
+      requires :id, :type => String, :desc => "ID."
+      requires :image, :type => Rack::Multipart::UploadedFile, :desc => "Image file."
+    end
+    post '/:id/upload' do
+      new_file = ActionDispatch::Http::UploadedFile.new(params[:image])
+    end
+
     # Mix in with desc instead of api_desc
     desc 'Uninstall / unsubscribe an application by its unique id or by its code name.'
     delete '/:id' do
