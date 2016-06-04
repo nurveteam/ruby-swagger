@@ -60,9 +60,7 @@ module Swagger::Grape
       match = @type.downcase.match(/\[(.*?)\]/)
       @swagger_type = {
         'type' => 'array',
-        'items' => {
-          'type' => match[1]
-        }
+        'items' => basic_type_schemes[match[1].downcase]
       }
     end
 

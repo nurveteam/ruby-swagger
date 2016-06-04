@@ -458,6 +458,21 @@ describe 'Ruby::Swagger' do
                               'updated_at' => { 'type' => 'string' } } }
                          )
       end
+
+      it 'should create a definition file ArrayOfObject.yml' do
+        doc = open_yaml('./doc/swagger/definitions/ArrayOfHash.yml')
+
+        expect(doc).to eq({ 'type' => 'object',
+                            'properties' => {
+                              'attributes' => {
+                                'type' => 'array',
+                                'items' => {
+                                  'type' => 'object',
+                                  'properties' => {}
+                                },
+                                'description' => 'Attributes' } } }
+                          )
+      end
     end
   end
 end
