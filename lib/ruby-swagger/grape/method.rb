@@ -133,7 +133,7 @@ module Swagger::Grape
     end
 
     def operation_consumes
-      if @operation.parameters.any? { |p| p.in == 'formData'}
+      if @operation.parameters&.any? { |p| p.in == 'formData'}
         @operation.consumes = [ 'multipart/form-data' ]
       end
     end
