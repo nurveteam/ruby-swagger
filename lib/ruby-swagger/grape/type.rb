@@ -96,7 +96,7 @@ module Swagger::Grape
         },
         'float' => {
           'type' => 'number',
-          'format' => 'float'
+          'format' => 'double'
         },
         'rack::multipart::uploadedfile' => {
           'type' => 'string' # 'Warning - I have no idea how to handle the type file. Right now I will consider this a string, but we should probably handle it...'
