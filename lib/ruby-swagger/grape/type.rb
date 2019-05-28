@@ -91,7 +91,7 @@ module Swagger::Grape
         },
         'float' => {
           'type' => 'number',
-          'format' => 'float'
+          'format' => 'double'
         },
         'rack::multipart::uploadedfile' => {
           'type' => 'file'
