@@ -36,7 +36,7 @@ module Swagger::Grape
     private
 
     def swagger_path_name(grape_route)
-      grape_path_name = grape_route.route_path
+      grape_path_name = +(grape_route.route_path)
       grape_prefix = grape_route.route_prefix
       grape_path_name.gsub!(/^\/#{grape_prefix}/, '') if grape_prefix
       grape_path_name.gsub!(/^\/:version/, '') # remove api version - if any
