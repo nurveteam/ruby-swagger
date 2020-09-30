@@ -88,6 +88,9 @@ module Swagger::Grape
         'boolean' => {
           'type' => 'boolean'
         },
+        'grape::api::boolean' => {
+          'type' => 'boolean'
+        },
         'virtus::attribute::boolean' => {
           'type' => 'boolean'
         },
