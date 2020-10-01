@@ -2,7 +2,8 @@ require 'spec_helper'
 
 require 'rake'
 load "#{File.dirname(__FILE__)}/../../lib/tasks/swagger.rake"
-require_relative 'grape/application_api'
+
+require_relative '../fixtures/grape/applications_api'
 
 describe 'Ruby::Swagger' do
   def no_stdout
@@ -448,8 +449,8 @@ describe 'Ruby::Swagger' do
                          )
       end
 
-      it 'should create a definition file StatusDetailed.yml' do
-        doc = open_yaml('./doc/swagger/definitions/StatusDetailed.yml')
+      it 'should create a definition file StatusDetailedEntity.yml' do
+        doc = open_yaml('./doc/swagger/definitions/StatusDetailedEntity.yml')
 
         expect(doc).to eq({ 'type' => 'object',
                             'properties' => {
@@ -461,8 +462,8 @@ describe 'Ruby::Swagger' do
                                                   'properties' => { 'phone' => { 'type' => 'string' },
                                                                     'address' => { 'type' => 'object', '$ref' => '#/definitions/ImageEntity' } } },
                               'digest' => { 'type' => 'string' },
-                              'responses' => { 'type' => 'object', '$ref' => '#/definitions/Status' },
-                              'last_reply' => { 'type' => 'object', '$ref' => '#/definitions/Status' },
+                              'responses' => { 'type' => 'object', '$ref' => '#/definitions/StatusEntity' },
+                              'last_reply' => { 'type' => 'object', '$ref' => '#/definitions/StatusEntity' },
                               'list' => { 'type' => 'array',
                                           'items' => { 'type' => 'object',
                                                        'properties' => {
@@ -477,8 +478,8 @@ describe 'Ruby::Swagger' do
                          )
       end
 
-      it 'should create a definition file Status.yml' do
-        doc = open_yaml('./doc/swagger/definitions/Status.yml')
+      it 'should create a definition file StatusEntity.yml' do
+        doc = open_yaml('./doc/swagger/definitions/StatusEntity.yml')
 
         expect(doc).to eq({ 'type' => 'object',
                             'properties' => {
@@ -490,8 +491,8 @@ describe 'Ruby::Swagger' do
                                                   'properties' => { 'phone' => { 'type' => 'string' },
                                                                     'address' => { 'type' => 'object', '$ref' => '#/definitions/ImageEntity' } } },
                               'digest' => { 'type' => 'string' },
-                              'responses' => { 'type' => 'object', '$ref' => '#/definitions/Status' },
-                              'last_reply' => { 'type' => 'object', '$ref' => '#/definitions/Status' },
+                              'responses' => { 'type' => 'object', '$ref' => '#/definitions/StatusEntity' },
+                              'last_reply' => { 'type' => 'object', '$ref' => '#/definitions/StatusEntity' },
                               'list' => { 'type' => 'array',
                                           'items' => { 'type' => 'object',
                                                        'properties' => {
@@ -519,6 +520,34 @@ describe 'Ruby::Swagger' do
                                 'description' => 'Attributes' } } }
                           )
       end
+    end
+
+    it 'should create a definition file StatusRepresenter.yml' do
+      doc = open_yaml('./doc/swagger/definitions/StatusRepresenter.yml')
+
+      expect(doc).to eq({ 'type' => 'object',
+                          'properties' => {
+        'user_name' => { 'type' => 'string' },
+        'text' => { 'type' => 'string', 'description' => 'Status update text.' },
+        'ip' => { 'type' => 'string' }, 'user_type' => { 'type' => 'string' },
+        'user_id' => { 'type' => 'string' },
+        'contact_info' => { 'type' => 'object',
+                            'properties' => { 'phone' => { 'type' => 'string' },
+                                              'address' => { 'type' => 'object', '$ref' => '#/definitions/ImageRepresenter' } } },
+        'digest' => { 'type' => 'string' },
+        'responses' => { 'type' => 'object', '$ref' => '#/definitions/StatusRepresenter' },
+        'last_reply' => { 'type' => 'object', '$ref' => '#/definitions/StatusRepresenter' },
+        'list' => { 'type' => 'array',
+                    'items' => { 'type' => 'object',
+                                 'properties' => {
+                      'option_a' => { 'type' => 'object',
+                                      'properties' => {
+                        'option_b' => { 'type' => 'array',
+                                        'items' => { 'type' => 'string' }, 'description' => 'An option' } } },
+                      'option_c' => { 'type' => 'integer', 'description' => 'Last option' } } }, 'description' => 'List of elements' },
+        'created_at' => { 'type' => 'string' },
+        'updated_at' => { 'type' => 'string' } } }
+                       )
     end
   end
 end
